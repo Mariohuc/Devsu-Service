@@ -28,12 +28,11 @@ public class ClientEntityTest {
 
         Client cl = new Client();
         cl.setName("Juan Vergara");
-        cl.setAddress("Av. Que teimport");
+        cl.setAddress("Av. Pensilvania");
         cl.setPhone("09943000");
         cl.setStatusPassword(1234);
 
         Client savedClient =  this.entityManager.persistAndFlush(cl);
-
 
         assertThat(savedClient.getId()).isNotNull();
         assertThat(savedClient.getName()).isEqualTo("Juan Vergara");

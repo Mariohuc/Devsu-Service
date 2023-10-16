@@ -18,28 +18,21 @@ public class ReportRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @SuppressWarnings("unchecked")
-    public List<TransactionReportItem> getTransactionReport(Integer clientId, String startDate, String endDate) {
-        List<TransactionReportItem> list;
-        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("transaction_report_get", "TransactionReportItem");
-        try {
-            query.registerStoredProcedureParameter( "$client_id",  Integer.class, ParameterMode.IN);
-            query.registerStoredProcedureParameter( "$start_date", String.class,ParameterMode.IN);
-            query.registerStoredProcedureParameter("$end_date", String.class, ParameterMode.IN);
-            /*set parameter value*/
-            query.setParameter("$client_id", clientId);
-            query.setParameter("$start_date", startDate);
-            query.setParameter("$end_date", endDate);
-            query.execute();
-            // Execute query
-            query.execute();
-            list = query.getResultList();
-        } finally {
-            try {
-                query.unwrap(ProcedureOutputs.class).release();
-            } catch (Exception e) {
-            }
-        }
-        return list;
+    public List<Object> getTransactionReport(Integer clientId, String startDate, String endDate) {
+
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery("transaction_report_get")
+                .registerStoredProcedureParameter(1, Integer.class,
+                        ParameterMode.IN)
+                .registerStoredProcedureParameter(2, String.class,
+                        ParameterMode.IN)
+                .registerStoredProcedureParameter(3, String.class,
+                        ParameterMode.IN);
+        query.setParameter(1, clientId);
+        query.setParameter(2, startDate);
+        query.setParameter(3, endDate);
+        query.execute();
+        List<Object> postComments = query.getResultList();
+        return postComments;
     }
 }

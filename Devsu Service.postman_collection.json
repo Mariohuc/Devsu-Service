@@ -190,6 +190,15 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountNumber\": 408605,\n    \"value\": 50\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "http://localhost:8080/api/v1/movimientos",
 							"protocol": "http",
@@ -215,7 +224,34 @@
 					"name": "Get report",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/reportes?clientId=88570&fechaInicio=2023-10-16&fechaFin=2023-10-16",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"reportes"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "88570"
+								},
+								{
+									"key": "fechaInicio",
+									"value": "2023-10-16"
+								},
+								{
+									"key": "fechaFin",
+									"value": "2023-10-16"
+								}
+							]
+						}
 					},
 					"response": []
 				}
