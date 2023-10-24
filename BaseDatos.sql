@@ -55,13 +55,19 @@ DROP PROCEDURE IF EXISTS transaction_report_get;
 DELIMITER $$
 $$
 CREATE PROCEDURE `transaction_report_get`(
+  IN $page INT, 
+	IN $limit INT, 
 	IN $client_id INT, 
 	IN $start_date DATE, 
 	IN $end_date DATE
 )
 BEGIN
+
+  DECLARE $offset INT;
+	SET $offset = ($page - 1) * $limit;
 	
 	SELECT 
+    ROW_NUMBER() OVER (ORDER BY t.id) AS nro,
 		DATE(t.txn_date) AS `date`, 
 		p.name AS client,
 		acc.acc_number AS accountNumber,
@@ -74,6 +80,7 @@ BEGIN
 	LEFT JOIN account acc on t.acc_number = acc.acc_number
   LEFT JOIN client c ON acc.client_id = c.client_id
   LEFT JOIN person p ON c.id = p.id
-	WHERE c.client_id = $client_id AND (DATE(t.txn_date) BETWEEN $start_date AND $end_date);
+	WHERE c.client_id = $client_id AND (DATE(t.txn_date) BETWEEN $start_date AND $end_date)
+  LIMIT $offset, $limit;
 END;
 $$

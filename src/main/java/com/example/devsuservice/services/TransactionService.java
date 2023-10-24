@@ -2,6 +2,7 @@ package com.example.devsuservice.services;
 
 import com.example.devsuservice.models.Account;
 import com.example.devsuservice.models.Transaction;
+import com.example.devsuservice.models.TransactionInfo;
 import com.example.devsuservice.repositories.AccountRepository;
 import com.example.devsuservice.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,16 @@ public class TransactionService {
             Transaction res = transactionRepository.save(trx);
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<Object> getTransactionReport(Integer page, Integer limit, Integer clientId, String startDate, String endDate){
+        try {
+            List<TransactionInfo> res = transactionRepository.getTransactionReport(page, limit, clientId, startDate, endDate);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
